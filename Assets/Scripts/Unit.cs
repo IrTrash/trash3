@@ -26,6 +26,23 @@ public class Unit : MonoBehaviour
 
     public class action
     {
+        public action(_type t, int[] ilist,float[] flist, string[] slist)
+        {
+            type = t;
+            if(ilist != null)
+            {
+                i = (int[])ilist.Clone();
+            }
+            if(flist != null)
+            {
+                f = (float[])flist.Clone();
+            }
+            if(slist != null)
+            {
+                s = (string[])slist.Clone();
+            }
+        }
+
         public enum _type : int
         { 
             move_1tile = 1, move_dest , stop, wait, useweapon_pos, useweapon_destunit, 
@@ -48,10 +65,10 @@ public class Unit : MonoBehaviour
     {
         hp = maxhp;
 
-        Debug.Log("11.4 -> " + system.gridy(11.4f));
-        Debug.Log("-7.6 -> " + system.gridy(-7.6f));
-        Debug.Log("5.8 -> " + system.gridy(5.8f));
-        Debug.Log("-3.2 -> " + system.gridy(-3.2f));
+        Debug.Log(" (4 , 2) -> (1 ,-3) 3만큼 " + system.move(4,2,1,-3,3));
+
+
+        currentaction = new action(action._type.move_1tile, new int[] {(int)_direction.left }, null, null);
     }
 
 
@@ -129,20 +146,50 @@ public class Unit : MonoBehaviour
         bool complete = false; //해당 액션(dest)이 완료되었는지(실행완료했나? 또는 더이상 수행할 이유가 있나없나 등)
         switch (dest.type)
         {
-            case action._type.move_1tile :
+            case action._type.move_1tile : //이런것들은 위치가 강제적으로 변경되거나하면 취소되어야 함
                 {
                     if(!dest.started)
                     {
+                        if (dest.i == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        dest.i = new int[] { dest.i[0], system.gridx(x), system.gridy(y) };
 
                     }
                     else
                     {
-                        //이동 가능 여부 체크해야하는데 아직 그런거 구현도안되서 ㅎㅎ(20210913)
+                        if(!canmove)
+                        {
+                            complete = false;
+                            break;
+                        }
 
+                        float deltaspeed = speed * Time.fixedDeltaTime;
+                        float gx = system.gridx(x), gy = system.gridy(y);
+                        //시작타일과 현재타일이 다르면 이 액션은 유효하지않게됨(1타일만이동하므로)                                                                                                
+                        if( (gx != dest.i[1] || gy != dest.i[2])  )
+                        {                            
+                            if(Mathf.Abs(gx - x) + Mathf.Abs(gy - y) <= deltaspeed)
+                            {
+                                transform.position = new Vector3(gx, gy, transform.position.z);
+                                complete = true;
+                            }
+                            else
+                            {
+                                Vector2 v = system.move(x, y, gx, gy, deltaspeed);
+                                transform.position = new Vector3(v.x, v.y, transform.position.z);
+                            }
+                            
+                        }
+                        moveonce((_direction)dest.i[0]);
 
                     }
                 }
                 break;
+
+                
         }
 
 
@@ -158,5 +205,51 @@ public class Unit : MonoBehaviour
 
     public float x => gameObject.transform.position.x;
     public float y => gameObject.transform.position.y;
-    
+
+    public bool canmove => state == _state.idle && speed > 0;
+
+    public bool moveonce(_direction direc)
+    {
+        //speed로 direc방향으로 한번 이동(deltaspeed). 
+
+        if(!canmove || speed <= 0) //막힌 곳 처리는 나중에
+        {
+            return false;
+        }
+
+
+        float deltaspeed = speed * Time.fixedDeltaTime;
+        float nx = x, ny = y;
+        switch (direc)
+        {
+            case _direction.left:
+                {
+                    nx -= deltaspeed;
+                }
+                break;
+
+            case _direction.up:
+                {
+                    ny += deltaspeed;
+                }
+                break;
+
+            case _direction.right:
+                {
+                    nx += deltaspeed;
+                }
+                break;
+
+            case _direction.down:
+                {
+                    ny -= deltaspeed;
+                }
+                break;
+        }
+        transform.position = new Vector3(nx, ny, transform.position.z);
+        Debug.Log(nx + " ," + ny);
+
+        return true;
+    }
+
 }
