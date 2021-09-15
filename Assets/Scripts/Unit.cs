@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     }
     public _type type = _type.unit;
 
-    public int maxhp = 10, hp;
+    public int team = 0, maxhp = 10, hp;
     public float speed = 1;
 
     public enum _direction : int
@@ -23,6 +23,7 @@ public class Unit : MonoBehaviour
         idle = 1, move, charge, attack
     }
     public _state state = _state.idle;
+    public int statetime = 0;
 
     public class action
     {
@@ -58,7 +59,9 @@ public class Unit : MonoBehaviour
     };
     action currentaction;
     List<action> actionlist = new List<action>();
-    public bool canaction = true;
+    public bool canaction = true;    
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -84,9 +87,14 @@ public class Unit : MonoBehaviour
             Destroy(gameObject); //death. 따로 메소드로 해놔야하나? 
         }
 
-        //행동 가능 여부는 먼저 행동가능하다고 해놓고 그 다음 불가능하게 하는 요소들이 있는지 체크 후 처리 하는 식으로
-        canaction = true;
-        //행동 불가능한 요소들 체크
+        //행동 가능 여부
+        if(state != _state.idle)
+        {
+            if(statetime-- <= 0)
+            {
+                state = _state.idle;
+            }
+        }
 
         actionproc();
 
@@ -153,9 +161,39 @@ public class Unit : MonoBehaviour
                         if (dest.i == null)
                         {
                             complete = true;
-                            break;
+                            break;  
                         }
-                        dest.i = new int[] { dest.i[0], system.gridx(x), system.gridy(y) };
+
+                        int dx = system.gridx(x), dy = system.gridy(y);
+                        switch ((_direction)dest.i[0])
+                        {
+                            case _direction.left:
+                                {
+                                    dx -= 1;
+                                }
+                                break;
+
+                            case _direction.right:
+                                {
+                                    dx += 1;
+                                }
+                                break;
+
+                            case _direction.up:
+                                {
+                                    dy += 1;
+                                }
+                                break;
+
+                            case _direction.down:
+                                {
+                                    dy -= 1;
+                                }
+                                break;                                
+                        }
+
+
+                        dest.i = new int[] { dest.i[0], dx, dy };
 
                     }
                     else
@@ -167,24 +205,20 @@ public class Unit : MonoBehaviour
                         }
 
                         float deltaspeed = speed * Time.fixedDeltaTime;
-                        float gx = system.gridx(x), gy = system.gridy(y);
-                        //시작타일과 현재타일이 다르면 이 액션은 유효하지않게됨(1타일만이동하므로)                                                                                                
-                        if( (gx != dest.i[1] || gy != dest.i[2])  )
-                        {                            
-                            if(Mathf.Abs(gx - x) + Mathf.Abs(gy - y) <= deltaspeed)
-                            {
-                                transform.position = new Vector3(gx, gy, transform.position.z);
-                                complete = true;
-                            }
-                            else
-                            {
-                                Vector2 v = system.move(x, y, gx, gy, deltaspeed);
-                                transform.position = new Vector3(v.x, v.y, transform.position.z);
-                            }
-                            
+                        float distance = Mathf.Sqrt((dest.i[1] - x) * (dest.i[1] - x) + (dest.i[2] - y) * (dest.i[2] - y));
+                        if(distance < deltaspeed)
+                        {
+                            transform.position = new Vector3(system.gridx(x), system.gridy(y), transform.position.z);                                
+                            complete = true;
+                            break;
                         }
-                        moveonce((_direction)dest.i[0]);
-
+                        else
+                        {
+                            transform.position = system.move(x, y, dest.i[1], dest.i[2], deltaspeed);
+                            direction = (_direction)dest.i[0];
+                            state = _state.move;
+                            statetime = 1;
+                        }
                     }
                 }
                 break;
@@ -208,48 +242,6 @@ public class Unit : MonoBehaviour
 
     public bool canmove => state == _state.idle && speed > 0;
 
-    public bool moveonce(_direction direc)
-    {
-        //speed로 direc방향으로 한번 이동(deltaspeed). 
 
-        if(!canmove || speed <= 0) //막힌 곳 처리는 나중에
-        {
-            return false;
-        }
-
-
-        float deltaspeed = speed * Time.fixedDeltaTime;
-        float nx = x, ny = y;
-        switch (direc)
-        {
-            case _direction.left:
-                {
-                    nx -= deltaspeed;
-                }
-                break;
-
-            case _direction.up:
-                {
-                    ny += deltaspeed;
-                }
-                break;
-
-            case _direction.right:
-                {
-                    nx += deltaspeed;
-                }
-                break;
-
-            case _direction.down:
-                {
-                    ny -= deltaspeed;
-                }
-                break;
-        }
-        transform.position = new Vector3(nx, ny, transform.position.z);
-        Debug.Log(nx + " ," + ny);
-
-        return true;
-    }
-
+    
 }
