@@ -14,6 +14,10 @@ public class weapon : MonoBehaviour
     public GameObject resultobj;
     public float direction;
 
+    float dx, dy;
+    public List<uniteffect> effectlist = new List<uniteffect>();
+    public float speed = 0;
+
     private void FixedUpdate()
     {
         switch (state)
@@ -28,7 +32,7 @@ public class weapon : MonoBehaviour
 
 
                     state = _state.cooling;
-                    t = cooldown;
+                    t = cooldown;              
                 }
                 break;
 
@@ -42,6 +46,48 @@ public class weapon : MonoBehaviour
                     state = _state.available;
                 }
                 break;
+        }
+    }
+
+
+    public bool request(float dx, float dy) //사용요철
+    {
+        if(state != _state.available || resultobj == null)
+        {
+            return false;
+        }
+
+
+        this.dx = dx;
+        this.dy = dy;
+        state = _state.charging;
+        t = charge;
+
+        return true;
+    }
+
+    public void createresult(float x, float y, float dx, float dy)
+    {
+        if(resultobj == null)
+        {
+            return;
+        }
+
+        GameObject obj = Instantiate(resultobj, new Vector3(x, y, 0), Quaternion.identity);
+        Projectile pj = obj.GetComponent<Projectile>();
+
+        if(pj != null)
+        {
+            pj.direction = Mathf.Atan2((dy - y), (dx - x));
+            if(speed > 0) //초기값 : 0
+            {
+                pj.speed = speed;
+            }
+            Unit u = gameObject.GetComponent<Unit>();
+            if(u != null)
+            {
+                pj.team = u.team;                
+            }
         }
     }
 }
