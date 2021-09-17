@@ -68,10 +68,12 @@ public class Unit : MonoBehaviour
     {
         hp = maxhp;
 
+        Debug.Log("-3.6 -> " + system.gridy(-3.6f));
+
         Debug.Log(" (4 , 2) -> (1 ,-3) 3만큼 " + system.move(4,2,1,-3,3));
 
 
-        currentaction = new action(action._type.move_1tile, new int[] {(int)_direction.left }, null, null);
+        currentaction = new action(action._type.move_1tile, new int[] {(int)_direction.down }, null, null);
     }
 
 
@@ -194,6 +196,7 @@ public class Unit : MonoBehaviour
 
 
                         dest.i = new int[] { dest.i[0], dx, dy };
+                        Debug.Log(dest.i);
 
                     }
                     else
@@ -223,6 +226,56 @@ public class Unit : MonoBehaviour
                 }
                 break;
 
+            case action._type.useweapon_pos:
+                {
+                    if(!dest.started)
+                    {
+                        //i : 사용할 wp index
+                        //f : 대상 위치
+                        if(dest.i == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+
+                        if(dest.f == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        else if(dest.f.Length < 2)
+                        {
+                            complete = true;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        weapon[] wps = gameObject.GetComponents<weapon>();
+                        if (wps == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        else if(wps.Length <= dest.i[0])
+                        {
+                            complete = true;
+                            break;
+                        }
+
+                        weapon wp = wps[dest.i[0]];
+                        if(wp.request(dest.f[0],dest.f[1]))
+                        {
+                            complete = true;                            
+                        }
+                        else
+                        {
+                            //그대로 끝낼까 그냥 대기하도록할까....
+                            
+                        }
+                    }
+                }
+                break;
                 
         }
 

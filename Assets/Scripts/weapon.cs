@@ -14,25 +14,74 @@ public class weapon : MonoBehaviour
     public GameObject resultobj;
     public float direction;
 
-    float dx, dy;
+    public float x,y,dx, dy;
     public List<uniteffect> effectlist = new List<uniteffect>();
     public float speed = 0;
+    public int blife = 0;
+
+    public Unit u;
+
+
+
+    private void Start()
+    {
+        if(u == null)
+        {
+            u = gameObject.GetComponent<Unit>();
+        }
+
+        x = transform.position.x;
+        y = transform.position.y;
+    }
+
 
     private void FixedUpdate()
     {
         switch (state)
         {
             case _state.charging:
+                if(u != null)
+                {
+                    if (u.state == Unit._state.idle)
+                    {
+                        u.state = Unit._state.charge;
+                    }
+
+
+                    if (u.state != Unit._state.charge)
+                    {
+                        clearstate();
+                        break;
+                    }
+                    u.statetime = 1;
+                }
+
+                
+
                 if(t > 0)
                 {
                     t--;
                 }
                 else
                 {
+                    if(u != null)
+                    {
+                        if(u.state != Unit._state.charge)
+                        {
+                            clearstate();
+                            break;
+                        }
 
+                        x = u.x;
+                        y = u.y;
 
+                        u.state = Unit._state.attack;
+                        u.statetime = casting;
+                    }
+
+                    createresult(x, y, dx, dy);                    
                     state = _state.cooling;
-                    t = cooldown;              
+                    t = cooldown;                                                  
                 }
                 break;
 
@@ -83,11 +132,32 @@ public class weapon : MonoBehaviour
             {
                 pj.speed = speed;
             }
+            if (blife > 0)
+            {
+                pj.life = blife;
+            }
+
+
+
             Unit u = gameObject.GetComponent<Unit>();
             if(u != null)
             {
                 pj.team = u.team;                
             }
+
+
+            foreach(uniteffect ue in effectlist)
+            {
+                uniteffect newue = obj.AddComponent<uniteffect>();
+                newue.copy(ue);
+                pj.effectlist.Add(newue);
+            }
         }
+    }
+
+    private void clearstate()
+    {
+        state = _state.available;
+        t = 0;
     }
 }

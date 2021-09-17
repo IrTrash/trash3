@@ -41,4 +41,24 @@ public class uniteffect : MonoBehaviour
 
     }
     
+
+    public void copy(uniteffect dest)
+    {
+        if(dest == null)
+        {
+            return;
+        }
+
+
+        type = dest.type;
+        continuous = dest.continuous;
+        if(dest.i != null)
+        {
+            i = (int[])dest.i.Clone();
+        }
+        if (dest.f != null)
+        {
+            f = (float[])dest.f.Clone();
+        }
+    }
 }

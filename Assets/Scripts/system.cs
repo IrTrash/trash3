@@ -6,6 +6,32 @@ public class system : MonoBehaviour
 {
     //tile 사이즈는 1로 통용
 
+    public const int left = -50, top = 50, right = 50, bottom = -50;
+
+    Astar astar = new Astar(left, bottom, right, top);
+
+    private void Start() //테스트
+    {
+    }
+
+
+    private void FixedUpdate()
+    {
+        blockupdate();   
+    }
+
+
+    public static system getsystem()
+    {
+        GameObject systemobj = GameObject.Find("System");
+        if(systemobj == null)
+        {
+            return null;
+        }
+
+        return systemobj.GetComponent<system>();
+    }
+
 
     public static int gridx(float x)
     {
@@ -68,5 +94,47 @@ public class system : MonoBehaviour
 
         float ratio = distance/d;
         return new Vector2(x + (x2 - x) * ratio, y + (y2 - y) * ratio);
+    }
+
+    public static bool isin(int x, int y, int x1, int y1, int x2, int y2) => (x - x1) * (x - x2) <= 0 && (y - y1) * (y - y2) <= 0;
+    
+    void blockupdate()
+    {
+
+    }
+
+
+    public Unit._direction[] getway(int x, int y, int dx, int dy)
+    {
+        if (!isin(x, y, left, bottom, right, top) || !isin(dx, dy, left, bottom, right, top))
+        {
+            return null;
+        }
+
+
+        node[] nodes = astar.getway(x, y, dx, dy);
+        if(nodes == null)
+        {
+            return null;
+        }
+
+        List<Unit._direction> r = new List<Unit._direction>();
+
+        for(int i = 0; i < nodes.Length - 1; i++)
+        {
+            int nx1 = nodes[i].gx, ny1 = nodes[i].gy, nx2 = nodes[i + 1].gx, ny2 = nodes[i + 1].gy;
+
+            if (nx1 != nx2)
+            {
+                r.Add(nx1 > nx2 ? Unit._direction.left : Unit._direction.right); ;
+            }
+            else
+            {
+                r.Add(ny1 > ny2 ? Unit._direction.down : Unit._direction.up); 
+            }
+
+        }
+
+        return r.ToArray();
     }
 }
