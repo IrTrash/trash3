@@ -12,6 +12,18 @@ public class system : MonoBehaviour
 
     private void Start() //테스트
     {
+        Unit._direction[] d = getway(3, 2, 1, 0);
+        if(d != null)
+        {
+            int n = 0;
+            foreach(Unit._direction dd in d)
+            {
+                Debug.Log(n++ + " : " + dd);
+            }
+            
+        }
+
+
     }
 
 
@@ -119,6 +131,17 @@ public class system : MonoBehaviour
         }
 
         List<Unit._direction> r = new List<Unit._direction>();
+
+        //시작점
+        if(x != nodes[0].gx)
+        {
+            r.Add(x > nodes[0].gx ? Unit._direction.left : Unit._direction.right); ;
+        }
+        else
+        {
+            r.Add(y > nodes[0].gy ? Unit._direction.down : Unit._direction.up); ;
+        }
+
 
         for(int i = 0; i < nodes.Length - 1; i++)
         {

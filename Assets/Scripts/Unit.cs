@@ -276,7 +276,32 @@ public class Unit : MonoBehaviour
                     }
                 }
                 break;
-                
+
+
+            case action._type.move_dest:
+                {
+                    if(!dest.started)
+                    {
+                        if (dest.i == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        else if(dest.i.Length < 2)
+                        {
+                            complete = true;
+                            break;
+                        }
+
+
+                        sdklofvakls
+                    }
+                    else
+                    {
+
+                    }
+                }
+                break;
         }
 
 
