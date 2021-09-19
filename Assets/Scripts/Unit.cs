@@ -55,7 +55,7 @@ public class Unit : MonoBehaviour
         public float[] f;
         public string[] s;
 
-
+        public action pushed;
     };
     action currentaction;
     List<action> actionlist = new List<action>();
@@ -152,6 +152,18 @@ public class Unit : MonoBehaviour
         {
             return true;
         }
+
+        if(dest.pushed != null)
+        {
+            if(executeaction(dest.pushed))
+            {
+                dest.pushed = null;
+            }
+
+
+            return false;
+        }
+
 
         bool complete = false; //해당 액션(dest)이 완료되었는지(실행완료했나? 또는 더이상 수행할 이유가 있나없나 등)
         switch (dest.type)
@@ -294,7 +306,26 @@ public class Unit : MonoBehaviour
                         }
 
 
-                        sdklofvakls
+                        system sys = system.getsystem();
+                        if (sys == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        _direction[] directions = sys.getway(system.gridx(x), system.gridy(y), dest.i[0], dest.i[1]);
+                        if(directions == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+
+                        List<int> i2 = new List<int>(directions.Length);
+                        foreach(_direction d in directions)
+                        {
+                            i2.Add((int)d);
+                        }
+
+                        dest.i = (int[])i2.ToArray().Clone();
                     }
                     else
                     {
