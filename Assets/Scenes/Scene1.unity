@@ -217,7 +217,9 @@ GameObject:
   - component: {fileID: 709546095}
   - component: {fileID: 709546096}
   - component: {fileID: 709546097}
+  - component: {fileID: 709546099}
   - component: {fileID: 709546098}
+  - component: {fileID: 709546100}
   m_Layer: 0
   m_Name: unit1
   m_TagString: Unit
@@ -349,8 +351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473c49826d2bf4e458a1a0b9fa4f909b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 1
-  t: 100
+  state: 0
+  t: 0
   charge: 20
   casting: 20
   cooldown: 20
@@ -378,6 +380,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2541b40643c49a048868d1f65f047b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 1
+  i: 02000000
+  f: []
+  s: []
+  dest: {fileID: 0}
+--- !u!114 &709546099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709546092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2541b40643c49a048868d1f65f047b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
+  i: 00000000
+  f:
+  - 0
+  - 0
+  s: []
+  dest: {fileID: 0}
+--- !u!114 &709546100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709546092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2541b40643c49a048868d1f65f047b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
+  i: 00000000
+  f:
+  - 3
+  - 3
+  s: []
+  dest: {fileID: 0}
 --- !u!1 &807308654
 GameObject:
   m_ObjectHideFlags: 0
