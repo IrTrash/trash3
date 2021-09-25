@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 709546095}
   - component: {fileID: 709546096}
   - component: {fileID: 709546097}
+  - component: {fileID: 709546098}
   m_Layer: 0
   m_Name: unit1
   m_TagString: Unit
@@ -365,6 +366,18 @@ MonoBehaviour:
   speed: 0
   blife: 0
   u: {fileID: 0}
+--- !u!114 &709546098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709546092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2541b40643c49a048868d1f65f047b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &807308654
 GameObject:
   m_ObjectHideFlags: 0

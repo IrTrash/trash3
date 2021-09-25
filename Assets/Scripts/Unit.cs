@@ -71,9 +71,7 @@ public class Unit : MonoBehaviour
         Debug.Log("-3.6 -> " + system.gridy(-3.6f));
 
         Debug.Log(" (4 , 2) -> (1 ,-3) 3만큼 " + system.move(4,2,1,-3,3));
-
-
-        currentaction = new action(action._type.move_1tile, new int[] {(int)_direction.down }, null, null);
+       
     }
 
 
@@ -208,8 +206,6 @@ public class Unit : MonoBehaviour
 
 
                         dest.i = new int[] { dest.i[0], dx, dy };
-                        Debug.Log(dest.i);
-
                     }
                     else
                     {
@@ -329,7 +325,16 @@ public class Unit : MonoBehaviour
                     }
                     else
                     {
+                        if(dest.i[0] <= 0)
+                        {
+                            complete = true;
+                            break;
+                        }
 
+
+                        dest.pushed = new action(action._type.move_1tile, new int[] { dest.i[dest.i.Length - dest.i[0]--] }, null, null);
+                        complete = false;
+                        break;
                     }
                 }
                 break;
@@ -353,4 +358,19 @@ public class Unit : MonoBehaviour
 
 
     
+
+    public bool addaction(action dest)
+    {
+        if(dest == null)
+        {
+            return false;
+        }
+
+
+        actionlist.Add(dest); //얕은 복사 해도 되나?
+
+        return true;
+    }
+
+    public bool addaction(action._type t, int[] i, float[] f, string[] s) => addaction(new action(t, i, f, s));
 }
