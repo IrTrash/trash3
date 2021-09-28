@@ -59,8 +59,8 @@ public class Unit : MonoBehaviour
     };
     action currentaction;
     List<action> actionlist = new List<action>();
-    public bool canaction = true;    
-    
+    public bool canaction = true;
+
 
 
     // Start is called before the first frame update
@@ -68,10 +68,13 @@ public class Unit : MonoBehaviour
     {
         hp = maxhp;
 
-        Debug.Log("-3.6 -> " + system.gridy(-3.6f));
+        if (gameObject.GetComponent<BoxCollider2D>() == null)
+        {
+           BoxCollider2D b2d = gameObject.AddComponent<BoxCollider2D>();
+            b2d.size = new Vector2(0.5f, 0.5f);
+        }
 
-        Debug.Log(" (4 , 2) -> (1 ,-3) 3만큼 " + system.move(4,2,1,-3,3));
-       
+
     }
 
 
@@ -121,10 +124,10 @@ public class Unit : MonoBehaviour
         {
             if(actionlist.Count > 0)
             {
-                currentaction = actionlist[0];
+                currentaction = actionlist[actionlist.Count - 1];
                 if(actionlist.Count > 1)
                 {
-                    actionlist = new List<action>(actionlist.GetRange(1, actionlist.Count - 1));
+                    actionlist = new List<action>(actionlist.GetRange(0, actionlist.Count - 1));
                 }
                 else
                 {
@@ -315,8 +318,11 @@ public class Unit : MonoBehaviour
                             break;
                         }
 
-                        List<int> i2 = new List<int>(directions.Length);
-                        foreach(_direction d in directions)
+                        List<int> i2 = new List<int>
+                        {
+                            directions.Length
+                        };
+                        foreach (_direction d in directions)
                         {
                             i2.Add((int)d);
                         }
