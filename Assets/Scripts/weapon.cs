@@ -21,6 +21,9 @@ public class weapon : MonoBehaviour
 
     public Unit u;
 
+    public int priority = 1; //반드시 1 이상
+    public int patternrange = 2; //패턴에서 취급하는 사정거리 이것도 1이상으로하는게 바람직할듯
+
 
 
     private void Start()

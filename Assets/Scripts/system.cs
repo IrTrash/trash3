@@ -108,7 +108,7 @@ public class system : MonoBehaviour
         return new Vector2(x + (x2 - x) * ratio, y + (y2 - y) * ratio);
     }
 
-    public static bool isin(int x, int y, int x1, int y1, int x2, int y2) => (x - x1) * (x - x2) <= 0 && (y - y1) * (y - y2) <= 0;
+    public static bool isin(float x, float y, float x1, float y1, float x2, float y2) => (x - x1) * (x - x2) <= 0 && (y - y1) * (y - y2) <= 0;
     
     void blockupdate()
     {
@@ -157,6 +157,33 @@ public class system : MonoBehaviour
             }
 
         }
+
+        return r.ToArray();
+    }
+
+
+    public static Unit[] findunit(int x1, int y1, int x2, int y2) //tag : unit인 게임오브젝트의 unit컴포넌트를 모아서 리턴
+    {
+        List<GameObject> gobjs = new List<GameObject>(GameObject.FindGameObjectsWithTag("Unit"));
+
+        if(gobjs.Count < 1)
+        {
+            return null;
+        }
+
+        List<Unit> r = new List<Unit>();
+        foreach(GameObject gobj in gobjs)
+        {            
+            Unit u = gobj.GetComponent<Unit>();
+            if(u != null)
+            {
+                if(isin(u.x, u.y, x1, y1, x2, y2))
+                {
+                    r.Add(u);
+                }                
+            }
+        }
+
 
         return r.ToArray();
     }

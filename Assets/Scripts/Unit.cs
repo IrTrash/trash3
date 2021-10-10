@@ -46,7 +46,7 @@ public class Unit : MonoBehaviour
 
         public enum _type : int
         { 
-            move_1tile = 1, move_dest , stop, wait, useweapon_pos, useweapon_destunit, 
+            move_1tile = 1, move_dest , stop, wait, useweapon_pos, useweapon_destunit, approachdest
         }
 
         public _type type;
@@ -74,7 +74,12 @@ public class Unit : MonoBehaviour
             b2d.size = new Vector2(0.5f, 0.5f);
         }
 
+        unitpattern up = gameObject.GetComponent<unitpattern>();
+        if(up == null)
+        {
+            up = gameObject.AddComponent<unitpattern>();
 
+        }
     }
 
 
@@ -344,6 +349,65 @@ public class Unit : MonoBehaviour
                     }
                 }
                 break;
+
+            case action._type.approachdest:
+                {
+                    if (!dest.started)
+                    {
+                        if (dest.i == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        else if (dest.i.Length < 3)
+                        {
+                            complete = true;
+                            break;
+                        }
+
+
+                        system sys = system.getsystem();
+                        if (sys == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+                        _direction[] directions = sys.getway(system.gridx(x), system.gridy(y), dest.i[0], dest.i[1]);
+                        if (directions == null)
+                        {
+                            complete = true;
+                            break;
+                        }
+
+                        dest.i[2] = Mathf.Min(directions.Length, dest.i[2]);
+
+                        List<int> i2 = new List<int>
+                        {
+                            dest.i[2]
+                        };
+
+                        for (int n = 0; n < dest.i[2]; n++)
+                        {
+                            i2.Add((int)directions[n]);
+                        }
+
+                        dest.i = (int[])i2.ToArray().Clone();
+                    }
+                    else
+                    {
+                        if (dest.i[0] <= 0)
+                        {
+                            complete = true;
+                            break;
+                        }
+
+
+                        dest.pushed = new action(action._type.move_1tile, new int[] { dest.i[dest.i.Length - dest.i[0]--] }, null, null);
+                        complete = false;
+                        break;
+                    }
+                }
+                break;
         }
 
 
@@ -359,6 +423,9 @@ public class Unit : MonoBehaviour
 
     public float x => gameObject.transform.position.x;
     public float y => gameObject.transform.position.y;
+
+    public int gridx => system.gridx(x);
+    public int gridy => system.gridx(y);
 
     public bool canmove => state == _state.idle && speed > 0;
 

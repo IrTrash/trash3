@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 709546095}
   - component: {fileID: 709546096}
   - component: {fileID: 709546097}
+  - component: {fileID: 709546098}
   m_Layer: 0
   m_Name: unit1
   m_TagString: Unit
@@ -232,7 +233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 709546092}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4, y: -1.6, z: 0}
+  m_LocalPosition: {x: 1.83, y: -0.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -365,6 +366,25 @@ MonoBehaviour:
   speed: 0
   blife: 0
   u: {fileID: 0}
+  priority: 1
+  patternrange: 2
+--- !u!114 &709546098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709546092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ddd7859b4903479ab4215388ef7a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  u: {fileID: 0}
+  searchrange: 2
+  tracerange: 3
+  target: {fileID: 0}
 --- !u!1 &807308654
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +440,6 @@ GameObject:
   - component: {fileID: 1093565759}
   - component: {fileID: 1093565758}
   - component: {fileID: 1093565761}
-  - component: {fileID: 1093565760}
   m_Layer: 0
   m_Name: unit2
   m_TagString: Unit
@@ -509,28 +528,11 @@ MonoBehaviour:
   team: 1
   maxhp: 10
   hp: 0
-  speed: 1
+  speed: 2
   direction: 4
   state: 1
   statetime: 0
   canaction: 1
---- !u!114 &1093565760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093565756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2541b40643c49a048868d1f65f047b73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
-  i: 0400000004000000
-  f: []
-  s: []
-  dest: {fileID: 0}
 --- !u!114 &1093565761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,3 +562,5 @@ MonoBehaviour:
   speed: 0
   blife: 0
   u: {fileID: 0}
+  priority: 1
+  patternrange: 2
