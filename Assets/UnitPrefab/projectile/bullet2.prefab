@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1811827172899309367}
   - component: {fileID: 1811827172899309364}
   - component: {fileID: 1811827172899309365}
+  - component: {fileID: 6300823086640161618}
   m_Layer: 0
   m_Name: bullet2
   m_TagString: Untagged
@@ -51,7 +52,8 @@ MonoBehaviour:
   team: 0
   hitdelay: 1
   hitlife: 1
-  effectlist: []
+  effectlist:
+  - {fileID: 6300823086640161618}
   rb: {fileID: 0}
 --- !u!212 &1811827172899309365
 SpriteRenderer:
@@ -103,3 +105,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6300823086640161618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811827172899309362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e9bad9b32f1a04cbcf79e619d96108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  continuous: 0
+  i: 01000000
+  f: []

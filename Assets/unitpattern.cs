@@ -185,9 +185,9 @@ public class unitpattern : MonoBehaviour
                     wpindex = -1;
                 }
                 else
-                {
+                {             
                     //접근
-                    u.addaction(Unit.action._type.approachdest, new int[] { }, null, null);
+                    u.addaction(Unit.action._type.approachdest, new int[] {target.gridx,target.gridy,1 }, null, null);
                 }
             }                      
         }

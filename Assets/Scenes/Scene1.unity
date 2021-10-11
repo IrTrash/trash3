@@ -551,7 +551,7 @@ MonoBehaviour:
   casting: 10
   cooldown: 10
   prange: 3
-  resultobj: {fileID: 494016966845862042, guid: 4d9de007b6c4a024fabe4edcba05277e,
+  resultobj: {fileID: 1811827172899309362, guid: a9c4b041b68174d428f7e3bb6b81fea0,
     type: 3}
   direction: 0
   x: 0
