@@ -354,7 +354,7 @@ MonoBehaviour:
   charge: 20
   casting: 20
   cooldown: 20
-  prange: 3
+  prange: 1
   resultobj: {fileID: 494016966845862042, guid: 4d9de007b6c4a024fabe4edcba05277e,
     type: 3}
   direction: 0
@@ -382,7 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   u: {fileID: 0}
-  searchrange: 2
+  searchrange: 3
   tracerange: 3
   target: {fileID: 0}
 --- !u!1 &807308654
@@ -550,7 +550,7 @@ MonoBehaviour:
   charge: 10
   casting: 10
   cooldown: 10
-  prange: 3
+  prange: 1
   resultobj: {fileID: 1811827172899309362, guid: a9c4b041b68174d428f7e3bb6b81fea0,
     type: 3}
   direction: 0
