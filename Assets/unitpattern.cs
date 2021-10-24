@@ -57,6 +57,12 @@ public class unitpattern : MonoBehaviour
                     normalunitproc();
                 }
                 break;
+
+            case _type.structure:
+                {
+                    
+                }
+                break;
         }
     }
 
