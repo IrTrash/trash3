@@ -77,7 +77,7 @@ public class unitpattern : MonoBehaviour
         //paction
 
 
-        if(!u.canaction)
+        if(!u.actionavailable)
         {
             return;
         }

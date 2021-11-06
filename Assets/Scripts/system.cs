@@ -129,6 +129,10 @@ public class system : MonoBehaviour
         {
             return null;
         }
+        else if(nodes.Length < 1)
+        {
+            return null;
+        }
 
         List<Unit._direction> r = new List<Unit._direction>();
 

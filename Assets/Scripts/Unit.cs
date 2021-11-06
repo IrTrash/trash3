@@ -4,8 +4,8 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public enum _type : int
-    { 
-        unit =1 , structure
+    {
+        unit = 1, structure
     }
     public _type type = _type.unit;
 
@@ -27,26 +27,26 @@ public class Unit : MonoBehaviour
 
     public class action
     {
-        public action(_type t, int[] ilist,float[] flist, string[] slist)
+        public action(_type t, int[] ilist, float[] flist, string[] slist)
         {
             type = t;
-            if(ilist != null)
+            if (ilist != null)
             {
                 i = (int[])ilist.Clone();
             }
-            if(flist != null)
+            if (flist != null)
             {
                 f = (float[])flist.Clone();
             }
-            if(slist != null)
+            if (slist != null)
             {
                 s = (string[])slist.Clone();
             }
         }
 
         public enum _type : int
-        { 
-            move_1tile = 1, move_dest , stop, wait, useweapon_pos, useweapon_destunit, approachdest
+        {
+            move_1tile = 1, move_dest, stop, wait, useweapon_pos, useweapon_destunit, approachdest
         }
 
         public _type type;
@@ -70,12 +70,12 @@ public class Unit : MonoBehaviour
 
         if (gameObject.GetComponent<BoxCollider2D>() == null)
         {
-           BoxCollider2D b2d = gameObject.AddComponent<BoxCollider2D>();
+            BoxCollider2D b2d = gameObject.AddComponent<BoxCollider2D>();
             b2d.size = new Vector2(0.5f, 0.5f);
         }
 
         unitpattern up = gameObject.GetComponent<unitpattern>();
-        if(up == null)
+        if (up == null)
         {
             up = gameObject.AddComponent<unitpattern>();
 
@@ -96,9 +96,9 @@ public class Unit : MonoBehaviour
         }
 
         //행동 가능 여부
-        if(state != _state.idle)
+        if (state != _state.idle)
         {
-            if(statetime-- <= 0)
+            if (statetime-- <= 0)
             {
                 state = _state.idle;
             }
@@ -113,24 +113,24 @@ public class Unit : MonoBehaviour
 
     void actionproc()
     {
-        if(!canaction)
+        if (!canaction)
         {
             return;
         }
 
-        if(currentaction != null)
+        if (currentaction != null)
         {
-            if(executeaction(currentaction))
+            if (executeaction(currentaction))
             {
                 currentaction = null;
             }
         }
         else
         {
-            if(actionlist.Count > 0)
+            if (actionlist.Count > 0)
             {
                 currentaction = actionlist[actionlist.Count - 1];
-                if(actionlist.Count > 1)
+                if (actionlist.Count > 1)
                 {
                     actionlist = new List<action>(actionlist.GetRange(0, actionlist.Count - 1));
                 }
@@ -146,22 +146,22 @@ public class Unit : MonoBehaviour
     {
         //이동 가능 여부(아직 미구현)
 
-        
+
     }
 
-    
+
 
 
     bool executeaction(action dest)
     {
-        if(dest == null )
+        if (dest == null)
         {
             return true;
         }
 
-        if(dest.pushed != null)
+        if (dest.pushed != null)
         {
-            if(executeaction(dest.pushed))
+            if (executeaction(dest.pushed))
             {
                 dest.pushed = null;
             }
@@ -174,14 +174,14 @@ public class Unit : MonoBehaviour
         bool complete = false; //해당 액션(dest)이 완료되었는지(실행완료했나? 또는 더이상 수행할 이유가 있나없나 등)
         switch (dest.type)
         {
-            case action._type.move_1tile : //이런것들은 위치가 강제적으로 변경되거나하면 취소되어야 함
+            case action._type.move_1tile: //이런것들은 위치가 강제적으로 변경되거나하면 취소되어야 함
                 {
-                    if(!dest.started)
+                    if (!dest.started)
                     {
                         if (dest.i == null)
                         {
                             complete = true;
-                            break;  
+                            break;
                         }
 
                         int dx = system.gridx(x), dy = system.gridy(y);
@@ -209,7 +209,7 @@ public class Unit : MonoBehaviour
                                 {
                                     dy -= 1;
                                 }
-                                break;                                
+                                break;
                         }
 
 
@@ -217,7 +217,7 @@ public class Unit : MonoBehaviour
                     }
                     else
                     {
-                        if(!canmove)
+                        if (!canmove)
                         {
                             complete = false;
                             break;
@@ -225,9 +225,9 @@ public class Unit : MonoBehaviour
 
                         float deltaspeed = speed * Time.fixedDeltaTime;
                         float distance = Mathf.Sqrt((dest.i[1] - x) * (dest.i[1] - x) + (dest.i[2] - y) * (dest.i[2] - y));
-                        if(distance < deltaspeed)
+                        if (distance < deltaspeed)
                         {
-                            transform.position = new Vector3(system.gridx(x), system.gridy(y), transform.position.z);                                
+                            transform.position = new Vector3(system.gridx(x), system.gridy(y), transform.position.z);
                             complete = true;
                             break;
                         }
@@ -244,22 +244,22 @@ public class Unit : MonoBehaviour
 
             case action._type.useweapon_pos:
                 {
-                    if(!dest.started)
+                    if (!dest.started)
                     {
                         //i : 사용할 wp index
                         //f : 대상 위치
-                        if(dest.i == null)
+                        if (dest.i == null)
                         {
                             complete = true;
                             break;
                         }
 
-                        if(dest.f == null)
+                        if (dest.f == null)
                         {
                             complete = true;
                             break;
                         }
-                        else if(dest.f.Length < 2)
+                        else if (dest.f.Length < 2)
                         {
                             complete = true;
                             break;
@@ -273,21 +273,21 @@ public class Unit : MonoBehaviour
                             complete = true;
                             break;
                         }
-                        else if(wps.Length <= dest.i[0])
+                        else if (wps.Length <= dest.i[0])
                         {
                             complete = true;
                             break;
                         }
 
                         weapon wp = wps[dest.i[0]];
-                        if(wp.request(dest.f[0],dest.f[1]))
+                        if (wp.request(dest.f[0], dest.f[1]))
                         {
-                            complete = true;                            
+                            complete = true;
                         }
                         else
                         {
                             //그대로 끝낼까 그냥 대기하도록할까....
-                            
+
                         }
                     }
                 }
@@ -296,14 +296,14 @@ public class Unit : MonoBehaviour
 
             case action._type.move_dest:
                 {
-                    if(!dest.started)
+                    if (!dest.started)
                     {
                         if (dest.i == null)
                         {
                             complete = true;
                             break;
                         }
-                        else if(dest.i.Length < 2)
+                        else if (dest.i.Length < 2)
                         {
                             complete = true;
                             break;
@@ -317,7 +317,7 @@ public class Unit : MonoBehaviour
                             break;
                         }
                         _direction[] directions = sys.getway(system.gridx(x), system.gridy(y), dest.i[0], dest.i[1]);
-                        if(directions == null)
+                        if (directions == null)
                         {
                             complete = true;
                             break;
@@ -336,7 +336,7 @@ public class Unit : MonoBehaviour
                     }
                     else
                     {
-                        if(dest.i[0] <= 0)
+                        if (dest.i[0] <= 0)
                         {
                             complete = true;
                             break;
@@ -411,7 +411,7 @@ public class Unit : MonoBehaviour
         }
 
 
-        if(!dest.started)
+        if (!dest.started)
         {
             dest.started = true;
         }
@@ -430,11 +430,14 @@ public class Unit : MonoBehaviour
     public bool canmove => state == _state.idle && speed > 0;
 
 
-    
+
+    public bool actionavailable => canaction && currentaction == null && actionlist.Count < 1;
+
+
 
     public bool addaction(action dest)
     {
-        if(dest == null)
+        if (dest == null)
         {
             return false;
         }
@@ -446,4 +449,5 @@ public class Unit : MonoBehaviour
     }
 
     public bool addaction(action._type t, int[] i, float[] f, string[] s) => addaction(new action(t, i, f, s));
+
 }
