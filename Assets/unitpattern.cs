@@ -6,7 +6,7 @@ public class unitpattern : MonoBehaviour
 {
     //자동 action
     public enum _type : int
-    { 
+    {
         normalunit = 1, structure
     }
     public _type type;
@@ -45,7 +45,7 @@ public class unitpattern : MonoBehaviour
 
     void proc()
     {
-        if(u == null)
+        if (u == null)
         {
             return;
         }
@@ -60,14 +60,14 @@ public class unitpattern : MonoBehaviour
 
             case _type.structure:
                 {
-                    
+
                 }
                 break;
         }
     }
 
 
-    public int searchrange = 2 , tracerange = 3; //tracerange < searchrange 이면 타겟을 찾아도 바로 유효하지 않아 의미없어질수있음
+    public int searchrange = 2, tracerange = 3; //tracerange < searchrange 이면 타겟을 찾아도 바로 유효하지 않아 의미없어질수있음
     public Unit target;
     weapon selectedwp;
     int wpindex = 0;
@@ -77,16 +77,16 @@ public class unitpattern : MonoBehaviour
         //paction
 
 
-        if(!u.actionavailable)
+        if (!u.actionavailable)
         {
             return;
         }
 
 
-        if(target != null)
+        if (target != null)
         {
             //타겟 유효성
-            if(!system.isin(target.x,target.y, u.gridx-tracerange , u.gridy - tracerange , u.gridx + tracerange, u.gridy + tracerange))
+            if (!system.isin(target.x, target.y, u.gridx - tracerange, u.gridy - tracerange, u.gridx + tracerange, u.gridy + tracerange))
             {
                 target = null;
             }
@@ -94,7 +94,7 @@ public class unitpattern : MonoBehaviour
 
 
         bool canattack = true;
-        if(target == null)
+        if (target == null)
         {
             //find enemy
             Unit[] units = system.findunit(system.gridx(u.x) - searchrange, system.gridy(u.y) - searchrange, system.gridx(u.x) + searchrange, system.gridy(u.y) + searchrange);
@@ -191,19 +191,85 @@ public class unitpattern : MonoBehaviour
                     wpindex = -1;
                 }
                 else
-                {             
+                {
                     //접근
-                    u.addaction(Unit.action._type.approachdest, new int[] {target.gridx,target.gridy,1 }, null, null);
+                    u.addaction(Unit.action._type.approachdest, new int[] { target.gridx, target.gridy, 1 }, null, null);
                 }
-            }                      
+            }
         }
 
-        if(!canattack) //공격할수없거나 할 일이없을때
+        if (!canattack) //공격할수없거나 할 일이없을때
         {
-    
+
         }
 
-        
+
     }
 
+
+    //건물용 변수들
+    public List<Unit> myunits, defenders, attackers, enemies;
+    public int defendrange = 1;
+    void structureproc()
+    {
+        if (!u.actionavailable)
+        {
+            return;
+        }
+
+
+        if(target == null)
+        {
+            //find target
+        }
+        else
+        {
+            //target vertification
+            if (!system.isin(target.x, target.y, u.gridx - tracerange, u.gridy - tracerange, u.gridx + tracerange, u.gridy + tracerange))
+            {
+                target = null;
+            }
+        }
+
+        //자기유닛들 관리
+        List<Unit> removelist = new List<Unit>();
+        foreach(Unit myu in myunits)
+        {
+
+        }
+        foreach(Unit reu in removelist)
+        {
+            myunits.Remove(reu);
+        }
+        removelist.Clear();
+
+        //attackers
+        foreach(Unit atu in attackers)
+        {
+
+        }
+        foreach(Unit reu in removelist)
+        {
+            attackers.Remove(reu);
+        }
+        removelist.Clear();
+
+        //defenders
+        foreach(Unit dfu in defenders)
+        {
+
+        }
+        foreach(Unit reu in removelist)
+        {
+            defenders.Remove(reu);
+        }
+        // removelist.Clear();
+
+        if (target != null)
+        {
+            //attackers에 공격 명령 할당
+
+            adsgsdgvgwewer`1231231234552352
+        }
+    }
 }
