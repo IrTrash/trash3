@@ -75,7 +75,10 @@ public class unitpattern : MonoBehaviour
     void normalunitproc()
     {
         //paction
-
+        if(!pactionproc())
+        {
+            return;
+        }
 
         if (!u.actionavailable)
         {
@@ -269,7 +272,106 @@ public class unitpattern : MonoBehaviour
         {
             //attackers에 공격 명령 할당
 
-            adsgsdgvgwewer`1231231234552352
+            foreach(Unit atu in attackers)
+            {
+               //attackdown을 해야하니 pattern 컴포넌트를 받는걸로
+
+            }
         }
+    }
+
+
+
+
+    public class paction
+    {
+        public enum types : int
+        {
+            attackdown =1
+        }
+
+        public types type;
+        public int[] i;
+        public float[] f;
+        public string[] s;
+
+        public paction(types t, int[] newi ,float[] newf, string[] news)
+        {
+            type = t;
+            if(newi != null)
+            {
+                i = (int[])newi.Clone();
+            }
+            if(newf != null)
+            {
+                f = (float[])newf.Clone();
+            }
+            if(news != null)
+            {
+                s = (string[])news.Clone();
+            }
+        }
+    }
+
+    public paction currentpaction;
+
+    public bool pactionrequest(paction.types type, int[] i, float[] f, string[] s)
+    {
+        if (type == 0 || currentpaction != null)
+        {
+            return false;
+        }
+
+
+        currentpaction = new paction(type, i, f, s);
+        return true;
+    }
+
+
+    bool pactionproc()
+    {
+        if(currentpaction != null)
+        {
+            return exepaction(currentpaction);
+        }
+
+        return true;
+    }
+
+    public bool exepaction(paction dest)
+    {
+        if(dest == null)
+        {
+            return false;
+        }
+
+        bool complete = false;
+        switch (dest.type)
+        {
+            case paction.types.attackdown:
+                {
+                    //주변에 적이 없을경우 한칸씩 목적지로 이동.
+
+                    //타겟이 있으면 유효성 검사 , 그 후 타겟이 없으면 타겟 탐색, 탐색된 타겟 없으면 이동
+                    if(target != null)
+                    {
+                        //유효성
+                    }
+                    
+                    if(target == null)
+                    {
+
+                    }
+                    else
+                    {
+                        complete = false;
+                        return true; //완료는 안됬지만 제어를 unitpattern의 처리함수로 넘기기 위함.
+                    }
+                }
+                break;
+        }
+
+
+        return complete;
     }
 }
