@@ -109,7 +109,9 @@ public class system : MonoBehaviour
     }
 
     public static bool isin(float x, float y, float x1, float y1, float x2, float y2) => (x - x1) * (x - x2) <= 0 && (y - y1) * (y - y2) <= 0;
-    
+
+    public static bool isin(float x, float y, float dx, float dy, float range) => isin(x, y, dx - range, dy - range, dx + range, dy + range);
+
     void blockupdate()
     {
 

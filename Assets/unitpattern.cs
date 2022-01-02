@@ -290,6 +290,8 @@ public class unitpattern : MonoBehaviour
             attackdown =1
         }
 
+        public bool started = false;
+
         public types type;
         public int[] i;
         public float[] f;
@@ -328,11 +330,23 @@ public class unitpattern : MonoBehaviour
     }
 
 
+    bool pactiononhold = false; 
     bool pactionproc()
     {
         if(currentpaction != null)
         {
-            return exepaction(currentpaction);
+            if(exepaction(currentpaction))
+            {
+                if(!pactiononhold)
+                {
+                    currentpaction = null;                    
+                }
+                else
+                {
+                    pactiononhold = false;
+                }
+                return true;
+            }
         }
 
         return true;
@@ -342,36 +356,105 @@ public class unitpattern : MonoBehaviour
     {
         if(dest == null)
         {
-            return false;
+            return true;
         }
 
-        bool complete = false;
         switch (dest.type)
         {
             case paction.types.attackdown:
                 {
+                    if(!dest.started)
+                    {                        
+                        //체크
+                        if(dest.i == null)
+                        {                           
+                            return true;
+                        }
+                        else if(dest.i.Length < 2)
+                        {                            
+                            return true;
+                        }
+
+                        dest.started = true; //각각 해주기로 안쓰면 걍 냅두고
+                    }
+
+                    //완료되었는지 확인 - 목적지 도착?
+                    if (system.gridx(u.x) == system.gridx(dest.i[0]) && system.gridy(u.y) == system.gridy(dest.i[1]))
+                    {
+                        Debug.Log("paction-attackdown : arrived to dest");
+                        return true;
+                    }
+
+
                     //주변에 적이 없을경우 한칸씩 목적지로 이동.
 
                     //타겟이 있으면 유효성 검사 , 그 후 타겟이 없으면 타겟 탐색, 탐색된 타겟 없으면 이동
                     if(target != null)
                     {
                         //유효성
+                        if (!system.isin(target.x, target.y, u.x, u.y, tracerange))
+                        {
+                            target = null;
+                        }
+                        
                     }
                     
                     if(target == null)
                     {
+                        Unit[] units = system.findunit(system.gridx(u.x) - searchrange, system.gridy(u.y) - searchrange, system.gridx(u.x) + searchrange, system.gridy(u.y) + searchrange);
 
+                        List<Unit> enemies = new List<Unit>();
+                        if (units != null)
+                        {
+                            foreach (Unit unit in units)
+                            {
+                                if (unit == u)
+                                {
+                                    continue;
+                                }
+                                else if (unit.team == u.team) //아군일 경우는 아직 생각한게 없음 ㅠ
+                                {
+                                    continue;
+                                }
+
+                                enemies.Add(unit);
+                            }
+                        }
+
+                        if (enemies.Count > 0)
+                        {
+                            pactiononhold = true;
+                                
+                            target = enemies[UnityEngine.Random.Range(0, enemies.Count)];
+                            return true;
+                        }
+                        else //찾아도 없으면
+                        {
+                            Debug.Log("moviiing");
+                            //목적지 이동
+                            if (u.actionavailable)
+                            {
+                                u.addaction(Unit.action._type.approachdest, new int[] { dest.i[0], dest.i[1] ,1}, null, null);
+                            }
+                        }
                     }
                     else
                     {
-                        complete = false;
+                        Debug.Log("enemy found while attacking down");
+                        pactiononhold = true;
                         return true; //완료는 안됬지만 제어를 unitpattern의 처리함수로 넘기기 위함.
                     }
                 }
                 break;
+
+            default: return true;
         }
 
+        
 
-        return complete;
+        return false;
     }
+
+
+    
 }
