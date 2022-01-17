@@ -27,9 +27,20 @@ public class system : MonoBehaviour
     }
 
 
+    float t = 0;
+    public int second = 0;
     private void FixedUpdate()
     {
-        blockupdate();   
+        t += Time.fixedDeltaTime;
+        if (t >= 1)
+        {
+            t = t - (int)t;
+            second++;
+            secondproc();
+        }
+
+        //비동기화 같은거 배워야하나? 잘모르겠음...
+        blockupdate();        
     }
 
 
@@ -192,5 +203,23 @@ public class system : MonoBehaviour
 
 
         return r.ToArray();
+    }
+
+
+    public List<unitbuilder> ublist = new List<unitbuilder>(); 
+    private void secondproc()
+    {
+        foreach(unitbuilder ub in ublist)
+        {
+            if(ub == null)
+            {
+                continue;
+            }
+
+            if(ub.resource < ub.resourcemax)
+            {
+                ub.resource++;
+            }            
+        }
     }
 }

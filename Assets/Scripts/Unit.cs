@@ -61,7 +61,9 @@ public class Unit : MonoBehaviour
     List<action> actionlist = new List<action>();
     public bool canaction = true;
 
-
+    public unitbuilder mybuilder;
+    public unitbuildinfo mybuildinfo;
+    public unitpattern ownerpattern;
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +84,21 @@ public class Unit : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if(mybuilder != null)
+        {
+            mybuilder.builded.Remove(this);
+        }
+        if(mybuildinfo != null)
+        {
+            mybuildinfo.builded.Remove(this);
+        }
+        if(ownerpattern != null)
+        {
+            ownerpattern.myunits.Remove(this);
+        }
+    }
 
     private void FixedUpdate()
     {

@@ -60,7 +60,7 @@ public class unitpattern : MonoBehaviour
 
             case _type.structure:
                 {
-
+                    structureproc();
                 }
                 break;
         }
@@ -212,18 +212,62 @@ public class unitpattern : MonoBehaviour
 
     //건물용 변수들
     public List<Unit> myunits, defenders, attackers, enemies;
+    public int defenderlimit = 3;
     public int defendrange = 1;
+    public int destubindex = -1;
     void structureproc()
     {
+        //구조물에는 paction을 아직 적용하지 않음. 까먹을까봐 써놓음
+
         if (!u.actionavailable)
         {
             return;
         }
-
-
+        
         if(target == null)
         {
             //find target
+
+            //find enemy
+            Unit[] units = system.findunit(system.gridx(u.x) - searchrange, system.gridy(u.y) - searchrange, system.gridx(u.x) + searchrange, system.gridy(u.y) + searchrange);
+
+            bool sexist = false;
+            List<Unit> enemies = new List<Unit>();
+            if (units != null)
+            {
+                foreach (Unit unit in units)
+                {
+                    if (unit == u)
+                    {
+                        continue;
+                    }
+                    else if (unit.team == u.team) //아군일 경우는 아직 생각한게 없음 ㅠ
+                    {
+                        continue;
+                    }
+
+
+                    if(unit.type == Unit._type.structure)
+                    {
+                        sexist = true;
+                    }
+                    else if(sexist)
+                    {
+                        continue;
+                    }
+
+                    enemies.Add(unit);
+                }
+            }
+
+            if (enemies.Count > 0)
+            {
+                target = enemies[UnityEngine.Random.Range(0, enemies.Count)];
+            }
+            else
+            {
+                
+            }
         }
         else
         {
@@ -234,11 +278,55 @@ public class unitpattern : MonoBehaviour
             }
         }
 
+        //생산 관리
+        unitbuilder ub = u.GetComponent<unitbuilder>();
+        if(ub != null)
+        {
+            if(ub.selectlist.Count > 0)
+            {
+                if(destubindex < 0)
+                {
+                    destubindex = UnityEngine.Random.Range(0, ub.selectlist.Count);
+                }               
+            }
+            else
+            {
+                destubindex = -1;
+            }
+            
+
+            if(ub.available() && ub.current == null && destubindex >= 0)
+            {
+                //일단 걍 되는대로,,                
+                if(ub.request(destubindex))
+                {
+                    destubindex = -1;
+                }
+            }
+        }
+
+
         //자기유닛들 관리
         List<Unit> removelist = new List<Unit>();
         foreach(Unit myu in myunits)
         {
+            if(myu == null)
+            {                
+                continue;
+            }
 
+
+            //defender 유닛 defenderlimit까지 뽑고 나머지 attacker
+            if(defenders.Count < defenderlimit)
+            {
+                defenders.Add(myu);
+            }
+            else
+            {
+                attackers.Add(myu);
+            }
+
+            removelist.Add(myu);
         }
         foreach(Unit reu in removelist)
         {

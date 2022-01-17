@@ -233,6 +233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c7cdd952ed7de46830ca1ed921cae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  second: 0
+  ublist: []
 --- !u!4 &807308656
 Transform:
   m_ObjectHideFlags: 0
@@ -281,8 +283,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reqtime: 10
+  cost: 1
+  tier: 1
+  buildlimit: 5
   resultobj: {fileID: 5793857547661857081, guid: 082e702a13ede77478ce03e653e6c0e1,
     type: 3}
+  builded: []
 --- !u!114 &960170789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,6 +306,11 @@ MonoBehaviour:
   waiting: []
   current: {fileID: 0}
   currenttime: 0
+  resource: 1
+  resourcemax: 15
+  builded: []
+  buildlimit: 8
+  up: {fileID: 0}
 --- !u!114 &960170790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  team: 0
+  team: 1
   maxhp: 30
   hp: 0
   speed: 1
@@ -321,6 +332,9 @@ MonoBehaviour:
   state: 1
   statetime: 0
   canaction: 1
+  mybuilder: {fileID: 0}
+  mybuildinfo: {fileID: 0}
+  ownerpattern: {fileID: 0}
 --- !u!212 &960170791
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -399,14 +413,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   u: {fileID: 0}
-  searchrange: 2
-  tracerange: 3
+  searchrange: 6
+  tracerange: 6
   target: {fileID: 0}
   myunits: []
   defenders: []
   attackers: []
   enemies: []
+  defenderlimit: 3
   defendrange: 1
+  destubindex: -1
 --- !u!1 &1408525733
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +436,7 @@ GameObject:
   - component: {fileID: 1408525735}
   - component: {fileID: 1408525734}
   - component: {fileID: 1408525738}
+  - component: {fileID: 1408525739}
   m_Layer: 0
   m_Name: Building1
   m_TagString: Unit
@@ -442,8 +459,13 @@ MonoBehaviour:
   selectlist:
   - {fileID: 1408525738}
   waiting: []
-  current: {fileID: 1408525738}
-  currenttime: 50
+  current: {fileID: 0}
+  currenttime: 0
+  resource: 1
+  resourcemax: 15
+  builded: []
+  buildlimit: 8
+  up: {fileID: 0}
 --- !u!212 &1408525735
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -516,6 +538,9 @@ MonoBehaviour:
   state: 1
   statetime: 0
   canaction: 1
+  mybuilder: {fileID: 0}
+  mybuildinfo: {fileID: 0}
+  ownerpattern: {fileID: 0}
 --- !u!4 &1408525737
 Transform:
   m_ObjectHideFlags: 0
@@ -542,9 +567,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4990c9581faf3d84a87e327acebca31f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reqtime: 10
+  reqtime: 20
+  cost: 1
+  tier: 1
+  buildlimit: 5
   resultobj: {fileID: 5750507710508337225, guid: c586008affcf7d345836050e73a88ad2,
     type: 3}
+  builded: []
+--- !u!114 &1408525739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408525733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ddd7859b4903479ab4215388ef7a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  u: {fileID: 0}
+  searchrange: 10
+  tracerange: 10
+  target: {fileID: 0}
+  myunits: []
+  defenders: []
+  attackers: []
+  enemies: []
+  defenderlimit: 3
+  defendrange: 1
+  destubindex: -1
 --- !u!1001 &5750507711141009445
 PrefabInstance:
   m_ObjectHideFlags: 0
