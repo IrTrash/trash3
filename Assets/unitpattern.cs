@@ -335,9 +335,12 @@ public class unitpattern : MonoBehaviour
         removelist.Clear();
 
         //attackers
-        foreach(Unit atu in attackers)
+        foreach(Unit atu in attackers)//각 atu의 ondestoy에서 제거하라고하기는 뭔가귀찮은거같은데 이게 나을수도???
         {
-
+            if(atu == null)
+            {
+                removelist.Add(atu);
+            }
         }
         foreach(Unit reu in removelist)
         {
@@ -348,7 +351,10 @@ public class unitpattern : MonoBehaviour
         //defenders
         foreach(Unit dfu in defenders)
         {
-
+            if(dfu == null)
+            {
+                removelist.Add(dfu);
+            }
         }
         foreach(Unit reu in removelist)
         {
@@ -362,8 +368,24 @@ public class unitpattern : MonoBehaviour
 
             foreach(Unit atu in attackers)
             {
-               //attackdown을 해야하니 pattern 컴포넌트를 받는걸로
+                if(!atu.actionavailable)
+                {
+                    continue;
+                }
 
+                //attackdown을 해야하니 pattern 컴포넌트를 받는걸로
+                unitpattern atup = atu.GetComponent<unitpattern>();
+                if(atup != null)
+                {                    
+                    if(atup.currentpaction != null)
+                    {
+                        atup.pactionrequest(paction.types.attackdown, new int[] { target.gridx, target.gridy }, null, null);
+                    }                    
+                }
+                else
+                {
+                    //어떻게 할까...
+                }
             }
         }
     }
