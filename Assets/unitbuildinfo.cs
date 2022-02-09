@@ -11,11 +11,11 @@ public class unitbuildinfo : MonoBehaviour
 
     public List<Unit> builded = new List<Unit>();
 
-    public bool create(int x, int y, int team, unitbuilder builder)
+    public Unit create(int x, int y, int team, unitbuilder builder)
     {
         if(resultobj == null)
         {
-            return false;
+            return null;
         }
 
 
@@ -34,7 +34,7 @@ public class unitbuildinfo : MonoBehaviour
 
         }
 
-        return true;
+        return u;
     }
 
 }

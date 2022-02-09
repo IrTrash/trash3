@@ -377,8 +377,9 @@ public class unitpattern : MonoBehaviour
                 unitpattern atup = atu.GetComponent<unitpattern>();
                 if(atup != null)
                 {                    
-                    if(atup.currentpaction != null)
+                    if(atup.currentpaction == null)
                     {
+                        Debug.Log("assalamalaikoom");
                         atup.pactionrequest(paction.types.attackdown, new int[] { target.gridx, target.gridy }, null, null);
                     }                    
                 }

@@ -63,20 +63,26 @@ public class unitbuilder : MonoBehaviour
                 {
                     int team = u.team;
                     int x = (int)transform.position.x, y = (int)transform.position.y;
-                    current.create(x, y, team, this);
-                    u.mybuilder = this;
-                    current.builded.Add(u);
-                    u.mybuildinfo = current;
-                    builded.Add(u);
 
-                    if(up != null)
+                    Unit ru = current.create(x, y, team, this);
+                    if(ru != null)
                     {
-                        if(!up.myunits.Contains(u))
+                        ru.mybuilder = this;
+                        current.builded.Add(ru);
+                        ru.mybuildinfo = current;
+                        builded.Add(ru);
+                        if (up != null)
                         {
-                            up.myunits.Add(u);
-                        }                        
-                        u.ownerpattern = up;
+                            if (!up.myunits.Contains(ru))
+                            {
+                                up.myunits.Add(ru);
+                            }
+                            ru.ownerpattern = up;
+                        }
                     }
+                    
+
+                    
                 }
                 else
                 {
